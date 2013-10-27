@@ -47,6 +47,29 @@ bool Texture::loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned i
 	return true;
 }
 
+bool Texture::loadRawDepthTexture(const void* pixels, unsigned int sizeX, unsigned int sizeY) {
+    VBE_ASSERT(handle == 0, "Trying to load onto an already in use texture instance");
+    //get handle
+    GLuint tex_handle;
+    glGenTextures(1, &tex_handle);
+    handle = tex_handle;
+
+    //bind handle and set to image
+    bind();
+    glTexImage2D(
+                GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+                sizeX, sizeY,
+                0,
+                GL_DEPTH_COMPONENT, GL_FLOAT, (GLvoid*) pixels
+                );
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+    setFilter(GL_NEAREST, GL_NEAREST);
+
+    setWrap(GL_CLAMP_TO_EDGE);
+    return true;
+}
+
 void Texture::bind() const {
 	VBE_ASSERT(handle !=0, "Trying to bind null texture into slot " << slot);
 	glActiveTexture(GL_TEXTURE0 + slot);

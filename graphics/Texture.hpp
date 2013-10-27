@@ -10,6 +10,7 @@ class Texture
 
 		bool loadFromFile(const std::string& filePath, bool mipmap = false);
 		bool loadRawRGBA8888(const void* pixels, unsigned int sizeX, unsigned int sizeY, bool mipmap = false); //assumes RGBA format
+        bool loadRawDepthTexture(const void* pixels, unsigned int sizeX, unsigned int sizeY);
 
 		void setFilter(GLenum min, GLenum mag);
 		void setWrap(GLenum wrap) const;
