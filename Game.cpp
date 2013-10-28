@@ -92,13 +92,12 @@ void Game::draw() {
 	root->propragateTransforms();
 	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
-    //window.display();
+    //window.display(); // I need to display just when I finished postprocessing (and 3d)
 }
 
-// Draw scenegraph
-void Game::justDraw() {
+// Draw scenegraph: call all of the draw functions for postprocessing (and 3d)
+void Game::drawScene() {
     VBE_ASSERT(root != NULL, "Null scenegraph root");
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     root->propragateTransforms();
     for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
         (*it)->draw();

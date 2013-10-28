@@ -25,7 +25,7 @@ class Game {
 		GameObject* getObjectByID(int id) const;
 
 		void run();
-        void justDraw();
+        void drawScene();
 		void setRoot(GameObject* newRoot);
 		GameObject* getRoot() {return root;}
 		int getObjectCount() const { return updateTasks.size(); }
