@@ -92,5 +92,15 @@ void Game::draw() {
 	root->propragateTransforms();
 	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
-	window.display();
+    //window.display();
 }
+
+// Draw scenegraph
+void Game::justDraw() {
+    VBE_ASSERT(root != NULL, "Null scenegraph root");
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    root->propragateTransforms();
+    for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
+        (*it)->draw();
+}
+
