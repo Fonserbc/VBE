@@ -14,8 +14,9 @@ GameObject::~GameObject() {
 	Game::i()->idMap.erase(id);
 }
 
-void GameObject::update(float deltaTime) {
+void GameObject::update(float deltaTime, float time) {
 	(void)deltaTime;
+    (void)time;
 }
 
 void GameObject::draw() const {

@@ -2,6 +2,7 @@
 #include "Manager.hpp"
 #include "audio/AudioManager.hpp"
 #include "input/Input.hpp"
+#include "Clock.hpp"
 
 Game* Game::instance = NULL;
 
@@ -43,14 +44,14 @@ GameObject* Game::getObjectByID(int id) const {
 // Main game loop
 void Game::run() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-	sf::Clock clock;
+    Clock clock(Clock::Local);
 	while (isRunning) {
-		float deltaTime = clock.restart().asSeconds();
-		update(deltaTime);
+        Clock::TimeStruct t = clock.tick();
+        update(t.deltaTime, t.time);
 		draw();
 	}
-	float deltaTime = clock.restart().asSeconds();
-	update(deltaTime);
+    Clock::TimeStruct t = clock.tick();
+    update(t.deltaTime, t.time);
 	draw();
 }
 
@@ -62,7 +63,7 @@ void Game::setRoot(GameObject *newRoot) {
 }
 
 // Update scenegraph
-void Game::update(float deltaTime) {
+void Game::update(float deltaTime, float time) {
 	Input::update(isRunning,window);
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
 
@@ -82,7 +83,7 @@ void Game::update(float deltaTime) {
 	}
 
 	for(std::set<GameObject*,FunctorCompareUpdate>::iterator it = updateTasks.begin(); it != updateTasks.end(); ++it)
-		(*it)->update(deltaTime);
+        (*it)->update(deltaTime, time);
 }
 
 // Draw scenegraph

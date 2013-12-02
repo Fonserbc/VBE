@@ -8,7 +8,7 @@ class GameObject { //scenegraph nodes
 		GameObject();
 		virtual ~GameObject();
 
-		virtual void update(float deltaTime);
+        virtual void update(float deltaTime, float time);
 		virtual void draw() const ;
 
 		void addTo(GameObject* parent);

@@ -35,7 +35,7 @@ class Game {
 	private:
 		static Game* i() { return Game::instance;}
 
-		void update(float deltaTime);
+        void update(float deltaTime, float time);
 		void draw();
 		bool loadResources ();
 
