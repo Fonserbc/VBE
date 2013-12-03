@@ -52,7 +52,6 @@ void Game::run() {
 	}
     Clock::TimeStruct t = clock.tick();
     update(t.deltaTime, t.time);
-	draw();
 }
 
 // Set root for the scenegraph

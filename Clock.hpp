@@ -2,6 +2,7 @@
 #define CLOCK_HPP
 
 #include <SFML/System/Clock.hpp>
+#include <iostream>
 
 class Clock {
 public:

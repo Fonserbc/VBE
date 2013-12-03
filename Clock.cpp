@@ -19,6 +19,7 @@ Clock::TimeStruct Clock::tick() {
     float tick, deltaTime;
     switch (mode) {
         case Local:
+            std::cout << "hax" << std::flush;
             tick = sfClock.getElapsedTime().asSeconds();
             deltaTime = tick - lastTick;
             lastTick = tick;
