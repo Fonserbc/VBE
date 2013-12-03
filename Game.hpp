@@ -2,6 +2,8 @@
 #define GAME_HPP
 #include "GameObject.hpp"
 
+#include <SFML/Network.hpp>
+
 class Game {
 		struct FunctorCompareDraw{
 				bool operator()(const GameObject* a, const GameObject* b) {
@@ -18,7 +20,7 @@ class Game {
 				}
 		};
 	public:
-		Game();
+        Game(bool slave);
 		~Game();
 
 		GameObject* getObjectByName(std::string name) const;
@@ -30,8 +32,14 @@ class Game {
 		GameObject* getRoot() {return root;}
 		int getObjectCount() const { return updateTasks.size(); }
 		sf::RenderWindow &getWindow() { return window; }
-		
+
 		bool isRunning;
+
+        void initConnection();
+        sf::TcpSocket* getConnection();
+
+        bool isSlave;
+
 	private:
 		static Game* i() { return Game::instance;}
 
@@ -39,7 +47,9 @@ class Game {
 		void draw();
 		bool loadResources ();
 
-		sf::RenderWindow window;
+        sf::TcpSocket socket;
+
+        sf::RenderWindow window;
 		GameObject* root;
 		std::map<std::string,GameObject*> nameMap;
 		std::map<int,GameObject*> idMap;

@@ -6,19 +6,21 @@
 
 Game* Game::instance = NULL;
 
-Game::Game() :isRunning(true), root(NULL), idCounter(1) {
+Game::Game(bool slave) :isRunning(true), root(NULL), idCounter(1), isSlave(slave) {
 	VBE_ASSERT(Game::instance == NULL, "Two games created");
 	Game::instance = this;
 	VBE_LOG("* INIT GAME");
 
-    window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Fullscreen,CONTEXT_SETTINGS_OPENGL);
-	window.setMouseCursorVisible(false);
+    window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
+    //window.setMouseCursorVisible(false);
 	window.setKeyRepeatEnabled(false);
 	window.setVerticalSyncEnabled(false);
 
 	isRunning = true;
 
 	VBE_LOG("* INIT GAME SUCCESFUL");
+
+    initConnection();
 }
 
 Game::~Game() {
@@ -33,6 +35,34 @@ Game::~Game() {
 	VBE_LOG("* EXIT GAME SUCCESFUL" );
 }
 
+void Game::initConnection() {
+    sf::IpAddress address = sf::IpAddress::LocalHost;
+    if (isSlave) {
+        sf::Socket::Status status = socket.connect(address, 42424);
+        if (status != sf::Socket::Done)
+        {
+            std::cout << "Could not connect" << std::endl;
+        }
+    }
+    else {
+        sf::TcpListener listener;
+
+        if (listener.listen(42424) != sf::Socket::Done)
+        {
+            std::cout << "Could not listen" << std::endl;
+        }
+
+        if (listener.accept(socket) != sf::Socket::Done)
+        {
+            std::cout << "Could not accept connection" << std::endl;
+        }
+    }
+}
+
+sf::TcpSocket* Game::getConnection() {
+    return &socket;
+}
+
 GameObject* Game::getObjectByName(std::string name) const {
 	return nameMap.at(name);
 }
@@ -44,7 +74,7 @@ GameObject* Game::getObjectByID(int id) const {
 // Main game loop
 void Game::run() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
-    Clock clock(Clock::Local);
+    Clock clock((isSlave)? Clock::Network : Clock::Local, &socket);
 	while (isRunning) {
         Clock::TimeStruct t = clock.tick();
         update(t.deltaTime, t.time);
@@ -92,7 +122,7 @@ void Game::draw() {
 	root->propragateTransforms();
 	for(std::set<GameObject*,FunctorCompareDraw>::iterator it = drawTasks.begin(); it != drawTasks.end(); ++it)
 		(*it)->draw();
-    //window.display(); // I need to display just when I finished postprocessing (and 3d)
+    window.display(); // I need to display just when I finished postprocessing (and 3d)
 }
 
 // Draw scenegraph: call all of the draw functions for postprocessing (and 3d)

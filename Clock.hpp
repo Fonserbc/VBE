@@ -3,6 +3,7 @@
 
 #include <SFML/System/Clock.hpp>
 #include <iostream>
+#include <SFML/Network.hpp>
 
 class Clock {
 public:
@@ -18,7 +19,7 @@ public:
         TimeStruct(float t, float d) : time(t), deltaTime(d) {}
     };
 
-    Clock(Mode m);
+    Clock(Mode m, sf::TcpSocket* socket);
 
     TimeStruct tick();
 
@@ -28,6 +29,8 @@ private:
     sf::Clock sfClock;
 
     Mode mode;
+
+    sf::TcpSocket* socket;
 };
 
 #endif // CLOCK_HPP

@@ -10,7 +10,7 @@ CONFIG(debug,debug|release) {
 
 TEMPLATE = app
 CONFIG -= qt
-LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
+LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -lGL
 INCLUDEPATH += $$PWD/
 QMAKE_CXXFLAGS += -std=c++11
 SOURCES += \
