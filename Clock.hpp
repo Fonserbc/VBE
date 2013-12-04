@@ -22,6 +22,7 @@ public:
     Clock(Mode m, sf::TcpSocket* socket);
 
     TimeStruct tick();
+    float getElapsedTime();
 
 private:
     float lastTick;

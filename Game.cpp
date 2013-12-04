@@ -77,22 +77,27 @@ void Game::run() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
     Clock clock((isSlave)? Clock::Network : Clock::Local, &socket);
     sf::Time sleepTime = sf::milliseconds(5);
-    float td;
+    float td, tu, timeclk;
     while (isRunning) {
-        Clock::TimeStruct t = clock.tick();   
-        update(t.deltaTime, t.time);
+        timeclk = clock.getElapsedTime();
 
         if (!isSlave) {
-            if(t.time - td > 0.04f){
+            if(timeclk- tu > 0.01f){
+                Clock::TimeStruct t = clock.tick();
+                update(t.deltaTime, t.time);
+                tu = t.time;
+            }
+            if(timeclk - td > 0.04f){
                 slaveDraw(true);
                 draw();
-                td = t.time;
+                td = timeclk;
             } else {
                 slaveDraw(false);
                 sf::sleep(sleepTime);
             }
         }
         else {
+            Clock::TimeStruct t = clock.tick();
             if (canSlaveDraw())
                 draw();
             else

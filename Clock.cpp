@@ -45,3 +45,6 @@ Clock::TimeStruct Clock::tick() {
 
     return TimeStruct(tick, deltaTime);
 }
+float Clock::getElapsedTime(){
+     return sfClock.getElapsedTime().asSeconds();
+}
