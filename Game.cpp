@@ -98,6 +98,7 @@ void Game::run() {
         }
         else {
             Clock::TimeStruct t = clock.tick();
+            update(t.deltaTime, t.time);
             if (canSlaveDraw())
                 draw();
             else
