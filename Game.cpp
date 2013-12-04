@@ -36,7 +36,7 @@ Game::~Game() {
 }
 
 void Game::initConnection() {
-    sf::IpAddress address = sf::IpAddress::LocalHost;
+    sf::IpAddress address("192.168.111.129");
     if (isSlave) {
         sf::Socket::Status status = socket.connect(address, 42424);
         if (status != sf::Socket::Done)
