@@ -76,7 +76,7 @@ GameObject* Game::getObjectByID(int id) const {
 void Game::run() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
     Clock clock((isSlave)? Clock::Network : Clock::Local, &socket);
-    sf::Time sleepTime = sf::milliseconds(1);
+    sf::Time sleepTime = sf::microseconds(100);
     float td;
     while (isRunning) {
         Clock::TimeStruct t = clock.tick();   
