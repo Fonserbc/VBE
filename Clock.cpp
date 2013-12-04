@@ -33,6 +33,7 @@ Clock::TimeStruct Clock::tick() {
             break;
         case Network:
             socket->receive(pk);
+            //std::cout << "nhax" << std::flush;
 
             pk >> tick;
             deltaTime = tick - lastTick;
