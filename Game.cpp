@@ -83,7 +83,7 @@ void Game::run() {
         update(t.deltaTime, t.time);
 
         if (!isSlave) {
-            if(t.time - td > 0.02f){
+            if(t.time - td > 0.04f){
                 slaveDraw(true);
                 draw();
                 td = t.time;
