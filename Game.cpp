@@ -76,13 +76,45 @@ GameObject* Game::getObjectByID(int id) const {
 void Game::run() {
 	VBE_ASSERT(root != NULL, "Null scenegraph root");
     Clock clock((isSlave)? Clock::Network : Clock::Local, &socket);
-	while (isRunning) {
-        Clock::TimeStruct t = clock.tick();
+    sf::Time sleepTime = sf::milliseconds(1);
+    float td;
+    while (isRunning) {
+        Clock::TimeStruct t = clock.tick();   
         update(t.deltaTime, t.time);
-		draw();
+
+        if (!isSlave) {
+            if(t.time - td > 0.02f){
+                slaveDraw(true);
+                draw();
+                td = t.time;
+            } else {
+                slaveDraw(false);
+                sf::sleep(sleepTime);
+            }
+        }
+        else {
+            if (canSlaveDraw())
+                draw();
+            else
+                sf::sleep(sleepTime);
+        }
 	}
     Clock::TimeStruct t = clock.tick();
     update(t.deltaTime, t.time);
+}
+
+void Game::slaveDraw(bool draw) {
+    sf::Packet pk;
+    pk << draw;
+    socket.send(pk);
+}
+
+bool Game::canSlaveDraw() {
+    sf::Packet pk;
+    socket.receive(pk);
+    bool draw;
+    pk >> draw;
+    return draw;
 }
 
 // Set root for the scenegraph
