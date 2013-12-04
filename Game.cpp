@@ -6,9 +6,10 @@
 
 Game* Game::instance = NULL;
 
-Game::Game(bool slave) :isRunning(true), root(NULL), idCounter(1), isSlave(slave) {
+Game::Game(bool slave, char* ip) :isRunning(true), root(NULL), idCounter(1), isSlave(slave) {
 	VBE_ASSERT(Game::instance == NULL, "Two games created");
 	Game::instance = this;
+    this->serverIp = ip;
 	VBE_LOG("* INIT GAME");
 
     window.create(sf::VideoMode(SCRWIDTH,SCRHEIGHT,32), WINDOW_TITLE ,sf::Style::Default,CONTEXT_SETTINGS_OPENGL);
@@ -36,7 +37,7 @@ Game::~Game() {
 }
 
 void Game::initConnection() {
-    sf::IpAddress address = sf::IpAddress::LocalHost;
+    sf::IpAddress address(serverIp);
     if (isSlave) {
         sf::Socket::Status status = socket.connect(address, 42424);
         if (status != sf::Socket::Done)

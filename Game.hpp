@@ -20,7 +20,7 @@ class Game {
 				}
 		};
 	public:
-        Game(bool slave);
+        Game(bool slave, char* ip);
 		~Game();
 
 		GameObject* getObjectByName(std::string name) const;
@@ -48,6 +48,7 @@ class Game {
 		bool loadResources ();
 
         sf::TcpSocket socket;
+        char* serverIp;
 
         sf::RenderWindow window;
 		GameObject* root;
