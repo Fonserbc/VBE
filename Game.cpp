@@ -51,7 +51,7 @@ void Game::run() {
 	}
 	float deltaTime = clock.restart().asSeconds();
 	update(deltaTime);
-	draw();
+	//draw();
 }
 
 // Set root for the scenegraph
