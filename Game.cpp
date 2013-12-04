@@ -86,17 +86,20 @@ void Game::run() {
                 Clock::TimeStruct t = clock.tick();
                 update(t.deltaTime, t.time);
                 tu = t.time;
-            }
-            if(timeclk - td > 0.04f){
-                slaveDraw(true);
-                draw();
-                td = timeclk;
+                if(timeclk - td > 0.04f){
+                    slaveDraw(true);
+                    draw();
+                    td = timeclk;
+                } else {
+                    slaveDraw(false);
+                    sf::sleep(sleepTime);
+                }
             } else {
-                slaveDraw(false);
                 sf::sleep(sleepTime);
             }
         }
         else {
+
             Clock::TimeStruct t = clock.tick();
             update(t.deltaTime, t.time);
             if (canSlaveDraw())
