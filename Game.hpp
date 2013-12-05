@@ -49,6 +49,8 @@ class Game {
 
         sf::TcpSocket socket;
         char* serverIp;
+        void slaveDraw(bool draw);
+        bool canSlaveDraw();
 
         sf::RenderWindow window;
 		GameObject* root;

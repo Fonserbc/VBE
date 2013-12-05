@@ -33,6 +33,7 @@ Clock::TimeStruct Clock::tick() {
             break;
         case Network:
             socket->receive(pk);
+            //std::cout << "nhax" << std::flush;
 
             pk >> tick;
             deltaTime = tick - lastTick;
@@ -43,4 +44,7 @@ Clock::TimeStruct Clock::tick() {
     }
 
     return TimeStruct(tick, deltaTime);
+}
+float Clock::getElapsedTime(){
+     return sfClock.getElapsedTime().asSeconds();
 }
